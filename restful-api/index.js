@@ -11,7 +11,7 @@ const conn = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'restful_db'
+  database: 'dbpenjualan'
 });
 
 //connect to database
@@ -21,8 +21,8 @@ conn.connect((err) =>{
 });
 
 //tampilkan semua data product
-app.get('/api/products',(req, res) => {
-  let sql = "SELECT * FROM product";
+app.get('/api/barang',(req, res) => {
+  let sql = "SELECT * FROM barang";
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
@@ -30,8 +30,8 @@ app.get('/api/products',(req, res) => {
 });
 
 //tampilkan data product berdasarkan id
-app.get('/api/products/:id',(req, res) => {
-  let sql = "SELECT * FROM product WHERE product_id="+req.params.id;
+app.get('/api/barang/:id',(req, res) => {
+  let sql = "SELECT * FROM barang WHERE idbarang='"+ req.params.id +"'";
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
@@ -39,9 +39,15 @@ app.get('/api/products/:id',(req, res) => {
 });
 
 //Tambahkan data product baru
-app.post('/api/products',(req, res) => {
-  let data = {product_name: req.body.product_name, product_price: req.body.product_price};
-  let sql = "INSERT INTO product SET ?";
+app.post('/api/barang',(req, res) => {
+  let data = {idbarang: req.body.idbarang, 
+                namabarang: req.body.namabarang,
+                hargabeli: req.body.hargabeli,
+                hargajual: req.body.hargajual,
+                stok: req.body.stok,
+                idsupplier: req.body.idsupplier};
+
+  let sql = "INSERT INTO barang SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
     res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
@@ -50,7 +56,7 @@ app.post('/api/products',(req, res) => {
 
 //Edit data product berdasarkan id
 app.put('/api/products/:id',(req, res) => {
-  let sql = "UPDATE product SET product_name='"+req.body.product_name+"', product_price='"+req.body.product_price+"' WHERE product_id="+req.params.id;
+  let sql = "UPDATE barang SET product_name='"+req.body.product_name+"', product_price='"+req.body.product_price+"' WHERE product_id="+req.params.id;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
@@ -68,5 +74,5 @@ app.delete('/api/products/:id',(req, res) => {
 
 //Server listening
 app.listen(3000,() =>{
-  console.log('Server started on port 3000...');
+    console.log("server listening on http://localhost:3000");
 });
