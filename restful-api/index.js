@@ -45,9 +45,12 @@ app.post('/api/barang',(req, res) => {
                 hargabeli: req.body.hargabeli,
                 hargajual: req.body.hargajual,
                 stok: req.body.stok,
-                idsupplier: req.body.idsupplier};
+                idsupplier: req.body.idsupplier,
+                expired: req.body.expired
+              };  
 
   let sql = "INSERT INTO barang SET ?";
+
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
     res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
@@ -55,8 +58,11 @@ app.post('/api/barang',(req, res) => {
 });
 
 //Edit data product berdasarkan id
-app.put('/api/products/:id',(req, res) => {
-  let sql = "UPDATE barang SET product_name='"+req.body.product_name+"', product_price='"+req.body.product_price+"' WHERE product_id="+req.params.id;
+app.put('/api/barang/:id',(req, res) => {
+  let sql = "UPDATE barang SET namabarang = '"+ req.body.namabarang +"', hargabeli = "+ req.body.product_price +",  ";
+  sql += "hargajual = "+ req.body.product_price +", stok = "+ req.body.stok +", idsupplier = '"+ req.body.idsupplier +"', ";
+  sql += "expired = '"+ req.body.expired +"' WHERE idbarang= '"+ req.body.idbarang + "'";
+
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
@@ -64,8 +70,8 @@ app.put('/api/products/:id',(req, res) => {
 });
 
 //Delete data product berdasarkan id
-app.delete('/api/products/:id',(req, res) => {
-  let sql = "DELETE FROM product WHERE product_id="+req.params.id+"";
+app.delete('/api/barang/:id',(req, res) => {
+  let sql = "DELETE FROM barang WHERE idbarang ='"+req.params.id+"'";
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
       res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
