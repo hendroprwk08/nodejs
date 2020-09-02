@@ -28,7 +28,7 @@ http.createServer(function (req, res) {
       mv(oldpath, newpath, function (err) {
         if (err) { throw err; }
         console.log('file uploaded successfully');
-        return res.end("file uploaded successfully");
+        return res.end('file uploaded successfully');
       });
     });
   } 
